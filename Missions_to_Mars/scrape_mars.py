@@ -7,23 +7,17 @@ import pymongo
 
 # Initialize browser
 def init_browser(): 
-    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
+    executable_path = {"executable_path": "C:/Users/Deepak/Downloads/chromedriver_win32/chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
     #Mac Users
     #executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
     #return Browser('chrome', **executable_path, headless=False)
 
-# Create Mission to Mars global dictionary that can be imported into Mongo
-#mars_info = {}
-
 # NASA MARS NEWS
 def scrape_mars_news():
     
-
     # Initialize browser 
     browser = init_browser()
-
-    #browser.is_element_present_by_css("div.content_title", wait_time=1)
 
     # Visit Nasa news url through splinter module
     url = 'https://mars.nasa.gov/news/'
@@ -49,28 +43,21 @@ def scrape_mars_news():
     
         # Dictionary entry from MARS NEWS
     news_data["news_title"] = titles[0]
-    news_data["paragraph_text_1"] = paragraphs[0]
-    news_data["paragraph_text_2"] = paragraphs[1]
-
+    news_data["news_paragraph"] = paragraphs[0]
     return news_data
 
-    #finally:
-
-    #browser.quit()
-
+    
 # FEATURED IMAGE
 def scrape_mars_image():
 
  # Initialize browser 
     browser = init_browser()
-    browser.is_element_present_by_css("img.jpg", wait_time=1)
-
+    
     # Visit Mars Space Images through splinter module
-    #image_url_featured = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-    #browser.visit(image_url_featured)# Visit Mars Space Images through splinter module
+    image_url_featured = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    browser.visit(image_url_featured)# Visit Mars Space Images through splinter module
 
     
-    browser = init_browser()
     # HTML Object 
     html = browser.html
     # Parse HTML with Beautiful Soup
@@ -81,48 +68,31 @@ def scrape_mars_image():
     for image in images:
         featured_images.append(image.img['src'])
     featured_image_url = 'https://www.jpl.nasa.gov/'+ featured_images[0]
-    # Display full link to featured image
-    print(featured_image_url)
-    # Dictionary entry from FEATURED IMAGE
-    #mars_info['featured_image_url'] = featured_image_url 
-    #close_browser(browser)    
+    
     return featured_image_url
-  #finally:
-
-    #browser.quit()
-
+    
 # Mars Weather 
 def scrape_mars_weather():
+    # Initialize browser 
+    browser = init_browser()
 
-
-        # Initialize browser 
-        browser = init_browser()
-
-        #browser.is_element_present_by_css("div", wait_time=1)
-
+        
         # Visit Mars Weather Twitter through splinter module
-        weather_url = 'https://twitter.com/marswxreport?lang=en'
-        browser.visit(weather_url)
+    weather_url = 'https://twitter.com/marswxreport?lang=en'
+    browser.visit(weather_url)
 
         # HTML Object 
-        html_weather = browser.html
+    html_weather = browser.html
 
         # Parse HTML with Beautiful Soup
-        soup = BeautifulSoup(html_weather, 'html.parser')
+    soup = BeautifulSoup(html_weather, 'html.parser')
 
         # Find all elements that contain tweets
-        mars_weather = soup.find("p", class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
-        print(mars_weather)
-        
-        # Dictionary entry from WEATHER TWEET
-        #mars_info['weather_tweet'] = weather_tweet
-        #close_browser(browser)
-        return mars_weather
-     #finally:
-
-       # browser.quit()
-
-
+    mars_weather = soup.find("p", class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
+            
+    return mars_weather
+    
+    
 # Mars Facts
 def scrape_mars_facts():
 
@@ -146,18 +116,12 @@ def scrape_mars_facts():
     mars_html_table = mars_html_table.replace("\n", "")
     mars_html_table
 
-    # Dictionary entry from MARS FACTS
-    #mars_info['mars_facts'] = mars_html_table
-
     return mars_html_table
-
-
+    
 # MARS HEMISPHERES
 
 
 def scrape_mars_hemispheres():
-
-    
 
     # Initialize browser 
     browser = init_browser()
@@ -201,16 +165,12 @@ def scrape_mars_hemispheres():
             
         # Append the retreived information into a list of dictionaries 
         hemisphere_image_urls.append({"title" : title, "img_url" : img_url})
-
-        #mars_info['hemisphere_image_url'] = hemisphere_image_urls
-        # Return mars_data dictionary 
-        #close_browser(browser)
+            
         return hemisphere_image_urls
 
 def scrape():
     """ Function: Main scrape functionality
         Calls other functions
-        Parameters: None
         Returns: combined mars_info dictionary """
 
     mars_info = {}
@@ -223,9 +183,11 @@ def scrape():
 
     mars_info["mars_html_table"] =scrape_mars_facts()
 
-    mars_info["hemisphere_image_url"] =scrape_mars-hemispheres()
+    mars_info["hemisphere_image_url"] =scrape_mars_hemispheres()
 
     # return mars_data dict
     return mars_info
+    
+
 #if __name__ == "__main__":
- #   print(scrape())
+    #print(scrape())
